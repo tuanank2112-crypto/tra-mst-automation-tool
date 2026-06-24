@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tra cứu MST</title>
+
+    <style>
+      :root{
+        --bg:#f6f7fb;
+        --card:#ffffff;
+        --text:#111827;
+        --muted:#6b7280;
+        --border:#e5e7eb;
+        --shadow: 0 10px 30px rgba(0,0,0,.08);
+        --radius:14px;
+
+        --btn:#111827;
+        --btnText:#ffffff;
+
+        --btn2:#f3f4f6;
+        --btn2Text:#111827;
+
+        --danger:#dc2626;
+      }
+      *{ box-sizing:border-box; }
+      body{
+        margin:0;
+        padding:12px;
+        width: 340px;
+        font-family: Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .box{
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius: var(--radius);
+        padding:12px;
+        box-shadow: var(--shadow);
+      }
+      .title{ font-size:14px; font-weight:700; margin:0 0 10px 0; }
+      .muted{ color:var(--muted); font-size:12px; line-height:1.35; }
+      label{ display:block; font-size:12px; color:var(--muted); margin:10px 0 6px; }
+      input[type="text"], input[type="password"], input:not([type]){
+        width:100%;
+        border:1px solid var(--border);
+        border-radius:10px;
+        padding:9px 10px;
+        outline:none;
+        font-size:13px;
+        background:#fff;
+      }
+      input:focus{ border-color:#9ca3af; }
+      input[type="file"]{
+        width:100%;
+        border:1px solid var(--border);
+        border-radius:10px;
+        padding:8px;
+        background:#fff;
+      }
+      button{
+        border:1px solid transparent;
+        border-radius:10px;
+        padding:9px 10px;
+        font-size:13px;
+        cursor:pointer;
+        user-select:none;
+      }
+      button:disabled{ opacity:.5; cursor:not-allowed; }
+      .btn-primary{ background: var(--btn); color: var(--btnText); width:100%; }
+      .btn-secondary{ background: var(--btn2); color: var(--btn2Text); border-color: var(--border); }
+      .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+      .btns{ display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px; }
+      pre#status{
+        margin:10px 0 0 0;
+        padding:10px;
+        border-radius:12px;
+        background:#0b1020;
+        color:#e5e7eb;
+        font-size:11px;
+        line-height:1.35;
+        max-height:160px;
+        overflow:auto;
+        white-space:pre-wrap;
+      }
+      .warn{ color:var(--danger); font-weight:700; }
+      #licenseMsg{ margin-top:8px; white-space:pre-wrap; }
+    </style>
+  </head>
+
+  <body>
+    <!-- LICENSE BOX -->
+    <div id="licenseBox" class="box" style="display:none;">
+      <div class="title">Nhập mật khẩu để dùng extension</div>
+      <div class="muted">
+        Mỗi lần nhập đúng password hiện tại, server sẽ tự đổi password mới và gửi mail cho bạn (owner).
+      </div>
+
+      <label>Mật khẩu kích hoạt</label>
+      <input id="licensePassword" type="password" placeholder="Nhập mật khẩu..." />
+
+      <div style="margin-top:10px;">
+        <button id="activate" class="btn-primary">Kích hoạt</button>
+      </div>
+
+      <div id="licenseMsg" class="muted"></div>
+      <div class="muted" style="margin-top:8px;">
+        <span class="warn">Lưu ý:</span> uninstall/remove extension là mất dữ liệu local → phải kích hoạt lại.
+      </div>
+    </div>
+
+    <!-- MAIN UI -->
+    <div id="mainUI" class="box">
+      <div class="title">Tra cứu MST</div>
+
+      <button id="open" class="btn-secondary" style="width:100%;">
+        Mở trang tra cứu (để nhập CAPTCHA 1 lần)
+      </button>
+      <div class="muted" style="margin-top:6px;">
+        Mở trang trước, nhập CAPTCHA xong rồi quay lại popup.
+      </div>
+
+      <div class="grid2" style="margin-top:10px;">
+        <div>
+          <label>Từ ngày (dd/mm/yyyy):</label>
+          <input id="fromDate" value="01/01/2025" />
+        </div>
+        <div>
+          <label>Đến ngày (dd/mm/yyyy):</label>
+          <input id="toDate" value="31/12/2025" />
+        </div>
+      </div>
+
+      <label>Chọn file Excel (.xlsx/.xls)</label>
+      <input id="file" type="file" accept=".xlsx,.xls" />
+
+      <div class="btns">
+        <button id="start" class="btn-primary" disabled>Start</button>
+        <button id="pause" class="btn-secondary" disabled>Pause</button>
+      </div>
+
+      <div class="btns">
+        <button id="download" class="btn-secondary" disabled>Tải kết quả</button>
+        <button id="reset" class="btn-secondary">Reset</button>
+      </div>
+
+      <pre id="status">Chưa có job.</pre>
+    </div>
+
+    <script src="libs/xlsx.full.min.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

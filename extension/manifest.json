@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "name": "Tra cứu MST tự động (tbphtc.gdt.gov.vn)",
+  "version": "1.0.0",
+  "description": "Đọc Excel, tự động điền MST + ngày, bấm tìm kiếm, lấy Tên DN + Trạng thái và xuất Excel.",
+  "permissions": ["storage", "tabs", "downloads"],
+  "host_permissions": [
+    "https://tracuuhoadon.gdt.gov.vn/*",
+    "https://script.google.com/macros/s/*/exec",
+    "https://script.googleusercontent.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Tra cứu MST",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://tracuuhoadon.gdt.gov.vn/tbphtc.html*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
